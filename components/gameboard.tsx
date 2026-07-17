@@ -21,11 +21,13 @@ function GameBoard({ highScore, setHighScore, onRestart }: GameBoardProps) {
   const snakeBodyRef = useRef(snakeBody);
   const foodPositionRef = useRef(foodPosition);
   const gameOnRef = useRef(gameOn);
+  const highScoreRef = useRef(highScore);
 
   useEffect(() => { gameOnRef.current = gameOn; }, [gameOn]);
   useEffect(() => { directionRef.current = snakeDirection; }, [snakeDirection]);
   useEffect(() => { snakeBodyRef.current = snakeBody; }, [snakeBody]);
   useEffect(() => { foodPositionRef.current = foodPosition; }, [foodPosition]);
+  useEffect(() => { highScoreRef.current = highScore; }, [highScore]);
 
   function checkCollision(al: number, at: number, bl: number, bt: number): boolean {
     const ar = al + snakeWidthAdjustmentFactor;
@@ -106,7 +108,7 @@ function GameBoard({ highScore, setHighScore, onRestart }: GameBoardProps) {
         const haveEaten = checkIfAte(newHead, food);
 
         if (haveEaten) {
-          setHighScore(prev => prev + 1);
+          setHighScore(highScoreRef.current + 1);
 
           const newBody = [newHead, ...body];
           snakeBodyRef.current = newBody;
