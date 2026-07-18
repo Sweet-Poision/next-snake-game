@@ -14,7 +14,7 @@ export default function Home() {
   };
 
   return (
-    <div className="border-box h-screen flex flex-col gap-2.5 box-border">
+    <div className="border-box bg-black h-screen flex flex-col gap-2.5 box-border">
       <div>
         <StatusBar
           highScore={highScore}
