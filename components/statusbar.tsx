@@ -63,7 +63,8 @@ export default function StatusBar({ highScore, onRestart }: StatusBarProps) {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 md:flex-row justify-between items-center h-15 box-border mx-2">
+    <div className="flex flex-col">
+    <div className="flex flex-col gap-2 md:flex-row justify-between items-center box-border mx-2">
       <div className="flex flex-row gap-2 items-center">
         <div className="flex relative w-12 h-12 overflow-hidden">
           <Image
@@ -92,7 +93,14 @@ export default function StatusBar({ highScore, onRestart }: StatusBarProps) {
             Restart
           </button>
 
-          {!playerIsReady && (
+          
+        </div>
+        
+      </div>
+      
+    </div>
+    <div>
+    {!playerIsReady && (
             <div className="mt-2 text-sm text-amber-200 text-center">
               <span>Use </span>
               <span className="font-semibold text-white">Arrow keys</span>
@@ -103,8 +111,8 @@ export default function StatusBar({ highScore, onRestart }: StatusBarProps) {
               <span> to play.</span>
             </div>
           )}
-        </div>
-      </div>
-    </div>
+          </div>
+          </div>
+    
   );
 }

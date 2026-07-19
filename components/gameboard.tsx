@@ -253,7 +253,7 @@ function GameBoard({ highScore, setHighScore, onRestart }: GameBoardProps) {
 
   return (
     <div
-      className="block w-full aspect-square border-red-50 overflow-hidden rounded-2xl border max-w-200 m-auto relative box-border"
+      className="block w-[min(80vmin,600px)] aspect-square overflow-hidden rounded-2xl border border-white m-auto relative box-border"
       style={{ minWidth: `${minWidth}px`, touchAction: 'none' as React.CSSProperties['touchAction'] }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
