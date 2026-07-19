@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, memo } from 'react'
 
 import { Position, GameBoardProps } from '@/types';
+import React from 'react';
 
 function GameBoard({ highScore, setHighScore, onRestart }: GameBoardProps) {
   const [gameOn, setGameOn] = useState<boolean>(true);
@@ -22,6 +23,7 @@ function GameBoard({ highScore, setHighScore, onRestart }: GameBoardProps) {
   const foodPositionRef = useRef(foodPosition);
   const gameOnRef = useRef(gameOn);
   const highScoreRef = useRef(highScore);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => { gameOnRef.current = gameOn; }, [gameOn]);
   useEffect(() => { directionRef.current = snakeDirection; }, [snakeDirection]);
@@ -209,10 +211,52 @@ function GameBoard({ highScore, setHighScore, onRestart }: GameBoardProps) {
     };
   }, []);
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    if (!t) return;
+    touchStartRef.current = { x: t.clientX, y: t.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const start = touchStartRef.current;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    if (!t) return;
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+    const threshold = 20; // px
+
+    if (Math.max(absX, absY) > threshold) {
+      if (absX > absY) {
+        if (dx > 0 && directionRef.current !== 'l') {
+          setSnakeDirection('r');
+          tickRateRef.current = boostedInterval;
+        } else if (dx < 0 && directionRef.current !== 'r') {
+          setSnakeDirection('l');
+          tickRateRef.current = boostedInterval;
+        }
+      } else {
+        if (dy > 0 && directionRef.current !== 'u') {
+          setSnakeDirection('d');
+          tickRateRef.current = boostedInterval;
+        } else if (dy < 0 && directionRef.current !== 'd') {
+          setSnakeDirection('u');
+          tickRateRef.current = boostedInterval;
+        }
+      }
+    }
+
+    touchStartRef.current = null;
+  };
+
   return (
     <div
       className="block w-full aspect-square border-red-50 overflow-hidden rounded-2xl border max-w-200 m-auto relative box-border"
-      style={{ minWidth: `${minWidth}px` }}
+      style={{ minWidth: `${minWidth}px`, touchAction: 'none' as React.CSSProperties['touchAction'] }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {snakeBody.map((body, index) => (
         <div

@@ -22,7 +22,7 @@ export default function Home() {
           onRestart={handleRestart}
         />
       </div>
-      <div className="border border-white flex-1 flex justify-center items-center">
+      <div className=" border-white flex-1 flex justify-center items-center">
         <GameBoard
           key={gameKey}
           highScore={highScore}
